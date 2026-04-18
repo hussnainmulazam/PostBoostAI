@@ -1,249 +1,237 @@
-Auto-Posting AI Project
+# PostBoostAI Frontend
 
-A FastAPI-based AI-powered automation project that allows automatic posting and management of tasks (todos) using a PostgreSQL database, SQLModel, and an AI agent (via Gemini API). This project demonstrates backend automation, AI integration, and database management in a modern Python stack.
+Modern frontend for PostBoostAI, built with React + Vite + TypeScript, focused on AI-assisted content workflows, dashboard experiences, and subscription/payment flow.
 
-Table of Contents
+This README documents the current frontend app in this folder (`frontend`), including architecture, routes, setup, and development workflow.
 
-Project Overview
+## Table of Contents
 
-Features
+- Overview
+- Tech Stack
+- Core Features
+- Application Routes
+- Project Structure
+- Installation and Local Development
+- Build and Preview
+- Styling and UI System
+- State and Data Flow
+- Performance Notes
+- Deployment Notes
+- Troubleshooting
+- Future Improvements
 
-Tech Stack
+## Overview
 
-Project Structure
+PostBoostAI frontend is a single-page application that combines:
 
-Installation
+- marketing pages (landing, pricing, blog, FAQ, contact)
+- auth entry points (login, signup, forgot password)
+- a dashboard shell for app tools (content, social, posts, connections, notifications, admin, etc.)
+- a standalone payment checkout page
 
-Environment Setup
+The app uses lazy loading for page-level chunks and route-driven navigation through React Router.
 
-Database Setup
+## Tech Stack
+
+### Framework and Tooling
+
+- React 18
+- TypeScript
+- Vite 7
+- SWC via `@vitejs/plugin-react-swc`
+
+### Routing and State
+
+- `react-router-dom` for route navigation
+- `@tanstack/react-query` provider included for async server-state workflows
+
+### UI and Styling
+
+- Tailwind CSS
+- shadcn-style UI primitives (under `src/components/ui`)
+- Radix UI components
+- Framer Motion animations
+- Lucide icons
+- Sonner + toaster notifications
+
+## Core Features
+
+- Responsive marketing pages with animated sections
+- Dashboard-style application area with sidebar navigation
+- Multiple AI-related workflow pages (content/social/task/resume agents)
+- Notifications, settings, admin/data management sections
+- Pricing + plan selection
+- Enhanced standalone payment experience:
+  - no dashboard sidebar/header while checking out
+  - payment method options (Card / PayPal / Bank)
+  - trust and conversion UI cues
+  - success state with return-to-dashboard action
 
-Running the Project
+## Application Routes
 
-API Endpoints
+Main routes are registered in `src/App.tsx`.
 
-AI Agent Functionality
+### Public / Marketing
 
-Usage Examples
+- `/` -> Landing page
+- `/blog` -> Blog listing
+- `/blog/:slug` -> Blog detail
+- `/pricing` -> Pricing page
+- `/faq` -> FAQ page
+- `/contact` -> Contact page
 
-Contributing
+### Auth
 
-License
+- `/login`
+- `/signup`
+- `/forgot-password`
 
-Project Overview
+### Dashboard Area
 
-This project automates posting tasks (todos) and uses an AI agent to process commands like add, update, and delete tasks. It is designed for:
+These routes render inside the dashboard shell:
 
-Automation enthusiasts
+- `/dashboard`
+- `/content-agent`
+- `/social-agent`
+- `/connections`
+- `/analytics`
+- `/settings`
+- `/notifications`
+- `/data-management`
+- `/admin`
+- `/all-posts`
 
-AI experimenters
+### Checkout
 
-Developers learning FastAPI with AI integrations
+- `/payment` -> standalone payment page (outside dashboard shell)
 
-Key goals:
+### Fallback
 
-Store todos in a PostgreSQL database.
+- `/404` and `*` -> Not Found page
 
-Handle todo operations automatically via AI agent commands.
+## Project Structure
 
-Provide a clean and modular FastAPI backend.
+High-level structure:
 
-Features
+```text
+frontend/
+├── src/
+│   ├── App.tsx                  # Route map and app providers
+│   ├── main.tsx                 # App bootstrap with BrowserRouter
+│   ├── index.css                # Global styles and Tailwind imports
+│   ├── components/
+│   │   ├── LandingPage.tsx
+│   │   ├── Pricing.tsx
+│   │   ├── Payment.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── Sidebar.tsx
+│   │   ├── AuthPages.tsx
+│   │   ├── Blog.tsx / BlogDetail.tsx
+│   │   ├── ...other feature components
+│   │   └── ui/                  # Reusable UI primitives
+│   ├── pages/
+│   │   └── NotFound.tsx
+│   └── data/
+│       └── blogPosts.ts
+├── public/                      # Static assets
+├── package.json
+├── vite.config.ts
+├── tailwind.config.ts
+└── README.md
+```
 
-✅ Add, update, delete, and fetch todos
+## Installation and Local Development
 
-✅ AI-powered task management using Gemini API
+## 1) Install dependencies
 
-✅ PostgreSQL storage with SQLModel ORM
+```bash
+npm install
+```
 
-✅ Modular project structure for scalability
+## 2) Run development server
 
-✅ Easy-to-extend architecture for other automation tasks
+```bash
+npm run dev
+```
 
-Tech Stack
+By default, Vite is configured to run on:
 
-Python 3.11+ – Programming language
+- host: `::`
+- port: `8080`
 
-FastAPI – Backend framework for APIs
+Open the local URL shown in terminal after startup.
 
-SQLModel – ORM for PostgreSQL
+## Build and Preview
 
-PostgreSQL – Relational database
+### Production build
 
-Gemini API – AI agent for automated commands
+```bash
+npm run build
+```
 
-Uvicorn – ASGI server for running FastAPI
+### Preview production build locally
 
-Optional tools:
+```bash
+npm run preview
+```
 
-Streamlit – Frontend interface (if integrated)
+### Lint
 
-Docker – Containerization for deployment
+```bash
+npm run lint
+```
 
-Project Structure
-auto-posting-project/
-│
-├── main.py              # FastAPI app initialization
-├── connection.py        # Database connection setup
-├── routes.py            # API routes
-├── middleware.py        # Optional middleware (auth, logging)
-├── model.py             # SQLModel schemas for todos
-├── agent.py             # AI agent logic using Gemini API
-├── utils.py             # Utility functions
-├── .env                 # Environment variables (DB credentials, API keys)
-└── requirements.txt     # Python dependencies
+## Styling and UI System
 
+- Tailwind config is in `tailwind.config.ts`.
+- Path alias `@` points to `src` (configured in `vite.config.ts` and `tsconfig.json`).
+- UI primitives live under `src/components/ui`.
+- Motion-heavy transitions are implemented with Framer Motion for smoother UX.
 
-Explanation:
+## State and Data Flow
 
-main.py: Initializes FastAPI app, includes routes, and sets up middleware.
+- Route state is used in a few places (for example passing selected plan data from pricing to payment).
+- Dashboard navigation is route-based (`navigate('/page')`) and also passes optional params.
+- React Query provider is initialized globally in `App.tsx` and can be extended for API integration.
 
-connection.py: Connects to PostgreSQL using SQLModel and handles session creation.
+## Performance Notes
 
-routes.py: Defines all endpoints for todos (/add, /update, /delete, /list).
+- Page and heavy feature components are lazy loaded in `App.tsx` and `Dashboard.tsx`.
+- Vite/Rollup manual chunking is configured in `vite.config.ts` for:
+  - react vendor
+  - UI/animation vendor
+  - query vendor
+- This improves first-load performance and cache behavior.
 
-middleware.py: Optional layer for logging requests or authentication.
+## Deployment Notes
 
-model.py: Defines Todo models including fields like id, title, description, status, created_at.
+For static hosting (Vercel, Netlify, Cloudflare Pages, etc.):
 
-agent.py: Handles AI agent commands using Gemini API to automate tasks.
+- run `npm run build`
+- deploy `dist/`
+- ensure SPA fallback rewrites all unknown routes to `index.html`
 
-utils.py: Contains reusable helper functions (e.g., date formatting, AI response parsing).
+Without SPA fallback, deep links like `/pricing` or `/dashboard` may return 404 from host instead of loading the app.
 
-Installation
+## Troubleshooting
 
-Clone the repository:
+### App loads blank or route fails on refresh
 
-git clone https://github.com/Sunny-Janjua/auto-posting-project.git
-cd auto-posting-project
+- verify SPA fallback is configured on your host
 
+### Tailwind classes not applying
 
-Create a virtual environment:
+- ensure `index.css` is imported in `src/main.tsx`
+- verify file paths match `content` config in `tailwind.config.ts`
 
-python -m venv venv
+### Module alias `@/...` not resolving
 
+- verify both `vite.config.ts` and `tsconfig.json` alias/path mapping are unchanged
 
-Activate the virtual environment:
+## Future Improvements
 
-Windows:
-
-venv\Scripts\activate
-
-
-Linux/Mac:
-
-source venv/bin/activate
-
-
-Install dependencies:
-
-pip install -r requirements.txt
-
-Environment Setup
-
-Create a .env file in the root directory:
-
-DATABASE_URL=postgresql+psycopg2://username:password@localhost:5432/your_db
-GEMINI_API_KEY=your_gemini_api_key
-
-
-Replace username, password, and your_db with your PostgreSQL credentials.
-
-Replace GEMINI_API_KEY with your Gemini API key for AI agent integration.
-
-Database Setup
-
-Make sure PostgreSQL is installed and running.
-
-Create a database:
-
-CREATE DATABASE auto_posting_db;
-
-
-Run migrations or create tables via SQLModel:
-
-from connection import engine
-from model import Todo
-SQLModel.metadata.create_all(engine)
-
-Running the Project
-
-Start the FastAPI app using Uvicorn:
-
-uvicorn main:app --reload
-
-
-Visit http://127.0.0.1:8000/docs for the interactive API documentation.
-
-API Endpoints
-Endpoint	Method	Description
-/todos/	GET	List all todos
-/todos/	POST	Add a new todo
-/todos/{id}	PUT	Update a todo by ID
-/todos/{id}	DELETE	Delete a todo by ID
-/agent/	POST	Send command to AI agent
-AI Agent Functionality
-
-The AI agent powered by Gemini API can:
-
-Add new todos automatically from natural language commands
-
-Update or delete todos based on context
-
-Parse AI output to match database schema
-
-Handle errors and confirmations
-
-Example command:
-
-{
-  "command": "Add a todo 'Finish project report' for today"
-}
-
-
-The agent will process the command and store it in the PostgreSQL database.
-
-Usage Examples
-
-Adding a todo via API:
-
-POST /todos/
-{
-    "title": "Finish project report",
-    "description": "Complete the final draft of AI project",
-    "status": "pending"
-}
-
-
-Updating a todo:
-
-PUT /todos/1
-{
-    "status": "completed"
-}
-
-
-AI Agent command:
-
-POST /agent/
-{
-    "command": "Update todo 1 status to completed"
-}
-
-Contributing
-
-Contributions are welcome!
-
-Fork the repository
-
-Create a new branch (git checkout -b feature/new-feature)
-
-Commit your changes (git commit -m "Add feature")
-
-Push to branch (git push origin feature/new-feature)
-
-Create a Pull Request
-
-License
-
-This project is licensed under the MIT License.
+- integrate real payment gateway APIs (Stripe/Razorpay/PayPal SDK) instead of mock timeout
+- add auth guards and role-based route protection
+- connect dashboard modules to backend APIs with typed service layer
+- add test coverage (unit + integration + e2e)
+- add analytics/events for conversion funnel (pricing -> payment -> success)
