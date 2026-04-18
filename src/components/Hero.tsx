@@ -14,12 +14,12 @@ import {
   SiInstagram, 
   SiTiktok, 
   SiX, 
-  SiLinkedin, 
   SiYoutube, 
   SiThreads, 
   SiPinterest, 
   SiFacebook 
 } from "react-icons/si";
+import { FaLinkedinIn } from "react-icons/fa6";
 
 const platforms = ["TikTok", "Instagram", "X", "LinkedIn", "YouTube", "Threads", "Pinterest", "Facebook"];
 
@@ -66,7 +66,7 @@ const socialPlatforms = [
   { title: "TikTok", icon: SiTiktok, color: "#000000" },
   { title: "Instagram", icon: SiInstagram, color: "#E1306C" },
   { title: "X (Twitter)", icon: SiX, color: "#000000" },
-  { title: "LinkedIn", icon: SiLinkedin, color: "#0A66C2" },
+  { title: "LinkedIn", icon: FaLinkedinIn, color: "#0A66C2" },
   { title: "YouTube", icon: SiYoutube, color: "#FF0000" },
   { title: "Threads", icon: SiThreads, color: "#000000" },
   { title: "Pinterest", icon: SiPinterest, color: "#E60023" },
