@@ -104,7 +104,7 @@ export function InteractiveFAQSection() {
   }, [activeCategory, searchValue]);
 
   // Spring physics for animations
-  const springConfig = { type: "spring", stiffness: 300, damping: 30 };
+  const springConfig = { type: "spring" as const, stiffness: 300, damping: 30 };
 
   return (
     <section className="mt-8 mb-20 relative z-10 w-full max-w-5xl mx-auto">
